@@ -14,11 +14,16 @@ void showFirstToLast();
 void showLastToFirst();
 void insertatLast(int x);
 void delete_specific(int y);
+int del_first();
+int del_last();
 
 void main(){
 	int x,ch,y;
 	while(1){
-	    printf("\n1.Insert at first\n2.Insert at last\n3.show first1 to last \n4.Show last to first\n5.Exit:\n");
+		printf("\n------------------");
+		printf("\n\tMenu\n");
+		printf("------------------");
+	    printf("\n1.Insert at first\n2.Insert at last\n3.show first to last \n4.Show last to first\n5.Delete a First Node\n6.Delete a Last Node\n7.Exit:\n");
 		printf("Enter a Choice:");
 		scanf("%d",&ch);
 		
@@ -40,28 +45,24 @@ void main(){
 				showLastToFirst();
 				break;
 			case 5:
-				exit(0);
-			case 6:
-				printf("Enter Info of element to delete:");
-				scanf("%d",&y);
-                void delete_specific(int y);
+                del_first();
                 break;
-			
+			case 6:
+				del_last();
+				break;
+			case 7:
+				exit(0);
 		}
 	}
 	
 }
 
 void showLastToFirst(){
-	struct node *save=first;
-	while(save!=last){
-		printf("%d\t",save->info);
-		save=save->rptr;
-	}
-	printf("%d\t",save->info);
-}
-void showFirstToLast(){
 	struct node *save=last;
+	if(first==NULL){
+		printf("List is Empty!");
+		return;
+	}
 	while(save!=first){
 		printf("%d\t",save->info);
 		save=save->lptr;
@@ -69,15 +70,18 @@ void showFirstToLast(){
 	printf("%d\t",save->info);
 }
 
-//void dou_delete(){
-//	if(last==NULL){
-//		printf("Underflow");
-//	}
-//	else{
-//		if()
-//	}
-//}
-
+void showFirstToLast(){
+	struct node *save=first;
+	if(first==NULL){
+		printf("List is Empty!");
+		return;
+	}
+	while(save!=last){
+		printf("%d\t",save->info);
+		save=save->rptr;
+	}
+	printf("%d\t",save->info);
+}
 
 void insertatFirst(int x){
 	struct node *new;
@@ -146,6 +150,42 @@ void delete_specific(int y){
 			}
 		}
 	}
+}
+
+int del_first(){
+	if(first==last){
+		free(first);
+		first=last=NULL;
+		return;
+	}
+	else{
+	struct node *save=first;
+	first=first->rptr;
+	free(save);
+	save=NULL;
+	first->lptr=NULL;
+	return first;
+  }
+}
+
+int del_last(){
+	if(first==last){
+		free(first);
+		first=last=NULL;
+		return;
+	}
+	else{
+	struct node *save=first;
+	struct node *pred;
+	while(save->rptr!=NULL){
+		save=save->rptr;
+	}
+	pred=save->lptr;
+	free(save);
+	save=NULL;
+	pred->rptr=NULL;
+	return first;
+  }
 }
 
 
